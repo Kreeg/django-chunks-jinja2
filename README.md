@@ -41,3 +41,13 @@ if you need the `Chunk` object in the template (maybe you've added some generic 
     <div>{{ chuck_obj.content }}</div>
 
 This is really helpful in those cases where you want to use `django.contrib.flatpages` but you need multiple content areas.  I hope this is helpful to people and I'll be making minor edits as I see them necessary.
+
+###Django jinja support:###
+
+In `settings.py` set
+
+    JINJA2_GLOBALS = {'chunk': 'chunks.contrib.jinja_support.chunk'}
+
+Now you can use django-chunks in template:
+
+    {{ chunk('home_page_left') }}

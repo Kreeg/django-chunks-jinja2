@@ -15,7 +15,9 @@ settings.configure(
             'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
             }
         },
-    INSTALLED_APPS = ('chunks',)
+    INSTALLED_APPS = ('chunks',),
+    USE_I18N = False,
+    LANGUAGE_CODE = 'en-US'
 )
 
 from django.test.utils import get_runner
