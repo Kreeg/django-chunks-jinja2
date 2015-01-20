@@ -27,6 +27,43 @@ class BaseTestCase(TestCase):
         return template.render(Context(context))
 
 
+class ChunkTestCase(BaseTestCase):
+    def test_cache_post_delete(self):
+        cache_key = 'chunk_home_page_left'
+        self.assertFalse(cache.get(cache_key), "key %r should NOT be cached" % cache_key)
+
+        self.render_template("{% load chunks %}"
+                             "<div>{% chunk 'home_page_left' 10 %}</div>")
+        cached_result = cache.get(cache_key)
+
+        self.assertTrue(cached_result, "key %r should be cached" % cache_key)
+
+        Chunk.objects.all().delete()
+        cached_result = cache.get(cache_key)
+        self.assertFalse(cached_result, "key %r should NOT be cached" % cache_key)
+
+    def test_cache_post_save(self):
+        cache_key = 'chunk_home_page_left'
+        self.assertFalse(cache.get(cache_key), "key %r should NOT be cached" % cache_key)
+
+        self.render_template("{% load chunks %}"
+                             "<div>{% chunk 'home_page_left' 10 %}</div>")
+        cached_result = cache.get(cache_key)
+
+        self.assertTrue(cached_result, "key %r should be cached" % cache_key)
+
+        c = Chunk.objects.get(key='home_page_left')
+        c.content = 'new'
+        c.save()
+        cached_result = cache.get(cache_key)
+        self.assertFalse(cached_result, "key %r should NOT be cached" % cache_key)
+
+        result = self.render_template('{% load chunks %}'
+                                      '<div>{% chunk "home_page_left" %}</div>')
+
+        self.assertEquals('<div>new</div>', result)
+
+
 class ChunkTemplateTagTestCase(BaseTestCase):
 
     def test_should_render_content_from_key(self):

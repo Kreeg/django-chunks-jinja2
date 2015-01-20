@@ -4,21 +4,21 @@ import sys
 from django.conf import settings
 
 settings.configure(
-    DATABASES = {
+    DATABASES={
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': os.path.join(os.path.dirname(__file__), 'testdb.sqlite'),
-            }
-        },
-    CACHES = {
+        }
+    },
+    CACHES={
         'default': {
             'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-            }
-        },
-    INSTALLED_APPS = ('chunks',),
-    USE_I18N = False,
-    LANGUAGE_CODE = 'en-US',
-    CHUNKS_USE_CACHE = True
+        }
+    },
+    INSTALLED_APPS=('chunks',),
+    USE_I18N=False,
+    LANGUAGE_CODE='en-US',
+    CHUNKS_USE_CACHE=True
 )
 
 from django.test.utils import get_runner
