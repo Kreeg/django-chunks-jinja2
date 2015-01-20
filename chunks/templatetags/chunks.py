@@ -45,11 +45,14 @@ class ChunkNode(template.Node):
 
     def render(self, context):
         try:
-            cache_key = CACHE_PREFIX + self.key
-            c = cache.get(cache_key)
-            if c is None:
+            if hasattr(settings, 'CHUNKS_USE_CACHE') and settings.CHUNKS_USE_CACHE:
+                cache_key = CACHE_PREFIX + self.key
+                c = cache.get(cache_key)
+                if c is None:
+                    c = Chunk.objects.get(key=self.key)
+                    cache.set(cache_key, c, int(self.cache_time))
+            else:
                 c = Chunk.objects.get(key=self.key)
-                cache.set(cache_key, c, int(self.cache_time))
             content = c.content
         except Chunk.DoesNotExist:
             content = ''

@@ -17,7 +17,8 @@ settings.configure(
         },
     INSTALLED_APPS = ('chunks',),
     USE_I18N = False,
-    LANGUAGE_CODE = 'en-US'
+    LANGUAGE_CODE = 'en-US',
+    CHUNKS_USE_CACHE = True
 )
 
 from django.test.utils import get_runner
